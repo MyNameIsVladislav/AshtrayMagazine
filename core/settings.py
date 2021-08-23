@@ -12,21 +12,25 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+import json
+
+from django.utils.translation import ugettext_lazy as _
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tr827dnl@zu=f^^)+qblb16^-*jsmx_k+(3@m0mbr2@19gjg4b'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.getenv('DEBUG'))
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,11 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'mainapp',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -77,9 +83,9 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
+        'ENGINE': os.getenv('ENGINE'),
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),  # пароль
     }
 }
@@ -107,7 +113,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = 'ru-Ru'
+LANGUAGES = (
+    ('ru-Ru', _('English')),
+    ('en-us', _('English')),
+)
 
 TIME_ZONE = 'UTC'
 
@@ -122,53 +132,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-        "rich": {"datefmt": "[%X]"},
-    },
-    'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'formatter': 'verbose',
-            'filename': 'error.log'
-        },
-        'null': {
-            'level': 'DEBUG',
-            'class': 'logging.NullHandler',
-        },
-
-        'console': {
-            'level': 'DEBUG',
-            'class': 'rich.logging.RichHandler',
-            'formatter': 'rich'
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'null'],
-            'propagate': True,
-            'level': 'INFO',
-        },
-        'django.request': {
-            'handlers': ['console', 'file'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-    }
-}
+with open(os.path.join(BASE_DIR, 'log/logging.log'), 'r') as log:
+    LOGGING = json.load(log)
