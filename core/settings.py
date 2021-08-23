@@ -9,10 +9,9 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
-from pathlib import Path
+from .logging.logging import LOGS
 import os
-import json
+from pathlib import Path
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -83,7 +82,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('ENGINE'),
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('NAME'),
         'USER': os.getenv('USER'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),  # пароль
@@ -141,5 +140,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-with open(os.path.join(BASE_DIR, 'log/logging.log'), 'r') as log:
-    LOGGING = json.load(log)
+LOGGING = LOGS
