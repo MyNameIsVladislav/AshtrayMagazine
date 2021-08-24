@@ -9,11 +9,13 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-from .logging.logging import LOGS
+
 import os
 from pathlib import Path
 
 from django.utils.translation import ugettext_lazy as _
+
+from .logging.logging import LOGS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
