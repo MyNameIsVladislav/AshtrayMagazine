@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 
     'mainapp',
     'authapp',
-    'articleapp'
+    'articleapp',
+    'catalogapp',
 ]
 
 AUTH_USER_MODEL = 'authapp.CustomUser'
