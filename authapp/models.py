@@ -13,7 +13,7 @@ from .managers import CustomUserManager
 
 # Create your models here.
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     birthday = models.DateField(_('birthday'))
@@ -66,32 +66,32 @@ class UserProfile(models.Model):
         (RU, 'RU'),
         (EN, 'EN'),
     )
+    phone_validator = RegexValidator(regex=r'^\+&7|1?\d{8,15}$')
 
-    user = models.OneToOneField(CustomUser, unique=True, null=False,
+    user = models.OneToOneField(User, unique=True, null=False,
                                 db_index=True, on_delete=models.CASCADE)
     gender = models.CharField(verbose_name=_('gender'), max_length=10, choices=GENDER_CHOICES, blank=True)
     avatar = models.ImageField(verbose_name=_('avatar'), upload_to=user_directory_path, blank=True)
     region = models.CharField(verbose_name=_('region'), max_length=2, choices=REGION_CHOICE)
-    phone_validator = RegexValidator(regex=r'^\+&7|1?\d{8,15}$')
     phone = models.CharField(verbose_name=_('phone'), validators=[phone_validator],
                              max_length=16, blank=True, help_text='+7..........')
 
     def __str__(self):
         return f'Профиль пользователя: {self.user.email} - {self.user.id}'
 
-    @receiver(post_save, sender=CustomUser)
+    @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             UserProfile.objects.create(user=instance)
 
-    @receiver(post_save, sender=CustomUser)
+    @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         instance.userprofile.save()
 
     @property
     def age(self):
         if self.user.birthday:
-            today = date.today()
+            today = now()
             return today.year - self.user.birthday.year - (
                     (today.month, today.day) < (self.user.birthday.month, self.user.birthday.day))
         return 0
