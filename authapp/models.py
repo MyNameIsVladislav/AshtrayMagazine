@@ -65,13 +65,13 @@ class UserProfile(models.Model):
         (RU, 'RU'),
         (EN, 'EN'),
     )
+    phone_validator = RegexValidator(regex=r'^\+&7|1?\d{8,15}$')
 
     user = models.OneToOneField(User, unique=True, null=False,
                                 db_index=True, on_delete=models.CASCADE)
     gender = models.CharField(verbose_name=_('gender'), max_length=10, choices=GENDER_CHOICES, blank=True)
     avatar = models.ImageField(verbose_name=_('avatar'), upload_to=user_directory_path, blank=True)
     region = models.CharField(verbose_name=_('region'), max_length=2, choices=REGION_CHOICE)
-    phone_validator = RegexValidator(regex=r'^\+&7|1?\d{8,15}$')
     phone = models.CharField(verbose_name=_('phone'), validators=[phone_validator],
                              max_length=16, blank=True, help_text='+7..........')
 
