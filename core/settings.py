@@ -151,3 +151,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGGING = LOGS
+
+DOMAIN_NAME = 'http://localhost:8000'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST')
+EMAIL_HOST_PASSWORD = os.getenv('PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
