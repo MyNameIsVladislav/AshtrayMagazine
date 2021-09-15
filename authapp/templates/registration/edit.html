@@ -1,0 +1,40 @@
+{% extends 'base/index.html' %}
+
+{% block content %}
+{% load static %}
+
+       <header class="bg-dark py-5 red-color">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Профиль</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Изменить содержимое профиля</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="middle container">
+            <ul class="nav nav-pills nav-fill">
+            {% for section in menu %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == section.url %}
+                  active
+                {% endif %}" href="{% url section.namespace %}" >{{section.title}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+            <div class="user_avatar mt-5 mb-5" style="text-align: center">
+                <img class="rounded-circle" src=" /media/{{ user.userprofile.avatar }}" width="33%">
+            </div>
+            <div class="order">
+                <form class="form-horizontal" action="{% url namespace %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ edit_form.as_p }}
+                    <button class="main_anchor for-mob" type="submit">Сохранить</button>
+                </form>
+                {% if request.resolver_match.url_name == 'edit' %}
+                <a class="more mt-5" href="{% url 'auth:password_change' %}"> Сменить пароль </a>
+                {% endif %}
+            </div>
+    </div>
+    <br>
+ {% endblock content %}

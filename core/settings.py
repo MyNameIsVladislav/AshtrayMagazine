@@ -40,6 +40,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'authapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,14 +49,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mainapp',
-    'authapp',
     'articleapp',
     'shopapp',
     'basketapp',
     'orderapp',
 ]
 
-AUTH_USER_MODEL = 'authapp.CustomUser'
+AUTH_USER_MODEL = 'authapp.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -142,6 +142,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIR = (
+    os.path.join(BASE_DIR, 'staticfiles'),
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

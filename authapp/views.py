@@ -41,7 +41,6 @@ def login(request):
 
     login_form = UserLoginForm(data=request.POST)
     if request.method == 'POST' and login_form.is_valid():
-        print(request.POST)
         email = request.POST['username']
         password = request.POST['password']
 

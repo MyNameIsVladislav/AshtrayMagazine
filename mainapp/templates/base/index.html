@@ -1,0 +1,159 @@
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="icon" type="image/png" href="{% static 'img/main/VS.svg' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/main/style.css' %}">
+    <title>{% block title %} {{ title }} {% endblock %}</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid container">
+            <a class="navbar-brand" href="/">
+                <img class='logo' src="{% static 'img/main/logo.svg' %}" alt="" width="42" height="68"
+                    class="d-inline-block align-text-top">
+                Ashtray Magazine
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:contact' %}">Контакты</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:edit' %}">
+                        Пользователь: {{ user.first_name|default:'' }}
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:logout' %}">Выйти</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:login' %}">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:register' %}">Регистрация</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% block content %}
+    <div class="top">
+        <div class="header-page container">
+            <div class="title-head">
+                <h1 class="main">Ashtray Magazine - здесь любят говорить</h1>
+                <p class="text">Мы независимое творческое объединение, состоящее из гиков и алкоголиков чуть более, чем
+                    полностью. Здесь вы не найдёте нытья о злободневных проблемах (только если совсем чуть-чуть).</p>
+                <a href="#144" class="main_anchor">Смотреть!</a>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+            <h2 class="sub-header" id="144">Категории товаров</h2>
+            <div class="category">
+                <div class="card">
+                    <img class='object' src="{% static 'img/main/film.svg' %}" alt="vinyl">
+                    <div class="describe">
+                        <h3 class='category-name'>Кинематограф</h3>
+                        <p class="describe-text">Широкий выбор винила с любимой музыкой! Быстрая доставка, гарантия!.
+                            Диски и пластинки в наличии и под заказ!</p>
+                        <a class='more' href="category/vinyl">Перейти в раздел</a>
+                    </div>
+
+                </div>
+                <div class="card card_1">
+                    <img class='object' src="{% static 'img/main/game.svg' %}" alt="cd">
+                    <div class="describe">
+                        <h3 class='category-name'>Игровая индустрия</h3>
+                        <p class="describe-text">Фирменные CD диски любимых групп и исполнителей покупайте с доставкой
+                            на дом. Большой выбор фирменных музыкальных дисков</p>
+                        <a class='more' href="#"> Перейти в раздел </a>
+                    </div>
+                </div>
+                <div class="card card_2">
+                    <img class='object' src="{% static 'img/main/music.svg' %}" alt="player">
+                    <div class="describe">
+                        <h3 class='category-name'>Музыка</h3>
+                        <p class="describe-text">Виниловые проигрыватели от мировых брендов. Официальные поставки.
+                            Гарантия качества! Выгодные цены на товары каталога.</p>
+                        <a class='more' href="#">Перейти в раздел</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="container">
+            <h2 class="sub-header">Актуальное</h2>
+            <p class="other_text">Последняя статья на сайте</p>
+            <div class="picture">
+                <img class="picture_img" src="{% static 'img/main/JHd0fWfRceM.jpg' %}" alt="picture" width="100%">
+                <p class="picture_text_first"> Самурайский уклад един. Трилогия «Беспредел» Такеши Китано.</p>
+            </div>
+        </div>
+        <div class="container">
+            <h2 class="sub-header">Популярное</h2>
+            <p class="other_text">Самое горячо обсуждаемое</p>
+            <div class="category">
+                <div class="card article">
+                    <img class='poster' src="{% static 'img/main/1588074254_poster-heat-signature.jpg' %}" alt="poster2">
+                </div>
+                <div class="card card_3 article">
+                    <img class='poster' src="{% static 'img/main/orig.jfif' %}" alt="poster2">
+                </div>
+                <div class="card article">
+                    <img class='poster' src="{% static 'img/main/people_6_poster_front_white_500.jpg' %}" alt="poster2">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+    <div class="footer">
+        <div class="container footer_box">
+            <div class="footer_top">
+                <div class="question">
+                    <h3 class="question_sign"> Хотите кривой сайт? <br>Звоните! Пишите!</h3>
+                    <ol class="bot_order">
+                        <li class="data"><a class='data'
+                                href="mailto:v.kolokolchikoff@yandex.ru">v.kolokolchikoff@yandex.ru</a>
+                        </li>
+                        <li class="data"><a class='data' href="tel:+732462831232">+7(324)628-312-32</a></li>
+                    </ol>
+                </div>
+                <div class="call">
+                    <a href="#" class="main_anchor">Let`s Talk</a>
+                </div>
+            </div>
+
+            <div class="copy">
+                <p>Все права защищены &copy;</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

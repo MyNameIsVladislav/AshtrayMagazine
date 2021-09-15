@@ -66,7 +66,6 @@ class UserEditForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
-        print(self.fields.keys())
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
@@ -91,7 +90,6 @@ class EditProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
-        print(self.fields.keys())
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
