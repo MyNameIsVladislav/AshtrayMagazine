@@ -95,3 +95,7 @@ class UserProfile(models.Model):
             return today.year - self.user.birthday.year - (
                     (today.month, today.day) < (self.user.birthday.month, self.user.birthday.day))
         return 0
+
+    @property
+    def full_name(self):
+        return f'{self.user.first_name} {self.user.last_name}'
