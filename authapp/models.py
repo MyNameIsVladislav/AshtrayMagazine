@@ -1,17 +1,16 @@
-from datetime import date, timedelta
+from datetime import timedelta
+import re
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.validators import RegexValidator
+from django.core.validators import BaseValidator
 from django.utils.timezone import now
 
-from .managers import CustomUserManager
+from authapp.managers import CustomUserManager
 
-
-# Create your models here.
 
 class User(AbstractUser):
     username = None
@@ -47,6 +46,13 @@ def user_directory_path(instance, filename):
     return 'users_avatar/user_{0}/{1}'.format(instance.user.id, filename)
 
 
+class RegexValidatorPhone(BaseValidator):
+    message = 'Некорректный номер телефона'
+
+    def compare(self, phone, valid_phone):
+        return not re.match(valid_phone, phone)
+
+
 class UserProfile(models.Model):
     class Meta:
         verbose_name = _('profile')
@@ -66,7 +72,7 @@ class UserProfile(models.Model):
         (RU, 'RU'),
         (EN, 'EN'),
     )
-    phone_validator = RegexValidator(regex=r'^\+&7|1?\d{8,15}$')
+    phone_validator = RegexValidatorPhone(limit_value=r'^(\+(7|1)|8)[0-9]{9}')
 
     user = models.OneToOneField(User, unique=True, null=False,
                                 db_index=True, on_delete=models.CASCADE)
@@ -79,15 +85,6 @@ class UserProfile(models.Model):
     def __str__(self):
         return f'Профиль пользователя: {self.user.email} - {self.user.id}'
 
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            UserProfile.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.userprofile.save()
-
     @property
     def age(self):
         if self.user.birthday:
@@ -99,3 +96,14 @@ class UserProfile(models.Model):
     @property
     def full_name(self):
         return f'{self.user.first_name} {self.user.last_name}'
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userprofile.save()
