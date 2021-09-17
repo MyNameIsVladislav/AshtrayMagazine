@@ -70,14 +70,26 @@ class ArticleModel(models.Model):
         return f'{self.title} - {self.pk}'
 
 
-class ModelLikesArticle(models.Model):
+class ArticleUserModel(models.Model):
+    class Meta:
+        abstract = True
+
     user_id = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE,
                                 verbose_name=_('user'), related_query_name='users')
     article_id = models.ForeignKey('ArticleModel', on_delete=models.CASCADE,
                                    verbose_name=_('article'), related_query_name='arts')
+    status = models.BinaryField(verbose_name='status', default=True)
+
+    def __str__(self):
+        return f'{self.user_id.first_name} {self.user_id.last_name} - comment {self.id}'
 
 
-class CommentsModel(ModelLikesArticle):
+class ModelLikesArticle(ArticleUserModel):
+    class Meta:
+        unique_together = (("user_id", "article_id"),)
+
+
+class CommentsModel(ArticleUserModel):
     class Meta:
         ordering = ('created_at',)
 
@@ -89,5 +101,8 @@ class CommentsModel(ModelLikesArticle):
         return f'Comment by {self.user_id.name} - date: {self.created_at}'
 
 
-class ModelLikesComment(ModelLikesArticle):
+class ModelLikesComment(ArticleUserModel):
+    class Meta:
+        unique_together = (("user_id", "comment_id"),)
+
     comment_id = models.ForeignKey(CommentsModel, on_delete=models.CASCADE)
