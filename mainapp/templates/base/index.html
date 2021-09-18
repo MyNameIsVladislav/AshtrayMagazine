@@ -60,6 +60,18 @@
                         <a class="nav-link" href="{% url 'auth:register' %}">Регистрация</a>
                     </li>
                     {% endif %}
+                    <li style="color: white;">
+                        <a class="nav-link" href="{% url 'cart:cart_detail' %}" style="padding-top: 5px;">
+                            <img src="{% static 'img/main/basket.png'%}" width="20">
+                            {% with total_items=cart|length %}
+                                {% if cart|length > 0 %}
+                                        <span class="basket_qty">
+                                            {{ total_items }}
+                                        </span>
+                                {% endif %}
+                            {% endwith %}
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

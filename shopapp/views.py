@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 
 from shopapp.models import Product, Category
+from cart.forms import CartAddProductForm
 
 
 class ShowProduct(ListView):
@@ -40,6 +41,7 @@ class ProductDetail(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductDetail, self).get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        context['cart_product_form'] = CartAddProductForm()
         return context
 
     def get(self, request, *args, **kwargs):

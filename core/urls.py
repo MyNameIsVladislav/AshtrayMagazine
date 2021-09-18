@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('mainapp.urls', namespace='main')),
     path('auth/', include('authapp.urls', namespace='auth')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('cart/', include('cart.urls', namespace='cart')),
     path('shop/', include('shopapp.urls', namespace='shop')),
 ]
 
