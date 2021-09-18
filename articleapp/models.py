@@ -6,7 +6,7 @@ from core.settings import AUTH_USER_MODEL
 
 
 def choose_path(instance, filename: str):
-    return f'root_file/articles/{instance.tag}/{filename}'
+    return f'root_file/articles/{instance.slug}/{filename}'
 
 
 class Author(models.Model):
@@ -17,12 +17,14 @@ class Author(models.Model):
 
     @property
     def full_name(self):
-        return f'{self.user_id.first_name} {self.user_id.lat_name} '
+        return f'{self.user_id.first_name} {self.user_id.last_name} '
 
 
 class Genres(models.Model):
+    class Meta:
+        ordering = ('name',)
     name = models.CharField(verbose_name=_('genre'), max_length=16)
-    slug = models.SlugField(verbose_name=_('genre'))
+    slug = models.SlugField(verbose_name=_('slug'))
 
     def __str__(self):
         return f'{self.name} - {self.pk}'
@@ -59,10 +61,12 @@ class ArticleModel(models.Model):
     img_mini = models.ImageField(upload_to=choose_path, verbose_name=_('image mini'))
     img_main = models.ImageField(upload_to=choose_path, verbose_name=_('image main'))
 
+    is_active = models.BooleanField(verbose_name='active', default=True)
     publish = models.DateTimeField(default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
     new_articles = ContentQuerySet.as_manager()
     top = ContentManager()
 

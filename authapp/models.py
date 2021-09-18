@@ -77,7 +77,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True, null=False,
                                 db_index=True, on_delete=models.CASCADE)
     gender = models.CharField(verbose_name=_('gender'), max_length=10, choices=GENDER_CHOICES, blank=True)
-    avatar = models.ImageField(verbose_name=_('avatar'), upload_to=user_directory_path, blank=True)
+    avatar = models.ImageField(verbose_name=_('avatar'), upload_to=user_directory_path, default='default/default.jpg')
     region = models.CharField(verbose_name=_('region'), max_length=2, choices=REGION_CHOICE)
     phone = models.CharField(verbose_name=_('phone'), validators=[phone_validator],
                              max_length=16, blank=True, help_text='+7..........')
