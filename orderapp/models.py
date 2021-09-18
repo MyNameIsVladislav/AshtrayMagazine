@@ -8,7 +8,10 @@ class Order(models.Model):
     user = models.ForeignKey(
         AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        verbose_name='user')
+        verbose_name='user', blank=True)
+    first_name = models.CharField(max_length=50, default='')
+    last_name = models.CharField(max_length=50, default='')
+    email = models.EmailField(null=True, default=None)
     address = models.CharField(max_length=250)
     postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)

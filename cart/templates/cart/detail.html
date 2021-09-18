@@ -38,7 +38,7 @@
     <td class="mob-none"> </td>
     <td> <strong> {{ cart.get_total_price }} руб. </strong>></td>
     <td>
-        <a href="#"><button class="btn btn-primary font-mob">Перейти к оформлению</button></a>
+        <a href="{% url 'order:create' %}"><button class="btn btn-primary font-mob">Перейти к оформлению</button></a>
     </td>
   </tr>
   </tbody>

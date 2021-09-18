@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse_lazy
 
 from core.logging.logging import LOGS
 from core.ckeditor.ckeditor_conf import CKEDITOR_CONF
@@ -155,6 +157,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 CART_SESSION_ID = 'cart'
+
+LOGIN_URL = reverse_lazy('auth:login')
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = CKEDITOR_CONF
