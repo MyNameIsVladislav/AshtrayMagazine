@@ -52,14 +52,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'auth:logout' %}">Выйти</a>
                     </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auth:login' %}">Войти</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auth:register' %}">Регистрация</a>
-                    </li>
-                    {% endif %}
                     <li style="color: white;">
                         <a class="nav-link" href="{% url 'cart:cart_detail' %}" style="padding-top: 5px;">
                             <img src="{% static 'img/main/basket.png'%}" width="20">
@@ -72,6 +64,14 @@
                             {% endwith %}
                         </a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:login' %}">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:register' %}">Регистрация</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
