@@ -16,7 +16,7 @@ class Cart(object):
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def add(self, product, update_quantity, quantity=1):
+    def add(self, product, update_quantity=False, quantity=1):
         """
         Добавить продукт в корзину или обновить его количество.
         """

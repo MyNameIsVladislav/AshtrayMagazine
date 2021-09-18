@@ -1,4 +1,4 @@
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -38,6 +38,8 @@ def send_verify_mail(user):
 
 def login(request):
     title = 'вход'
+    if request.GET.get('next'):
+        messages.add_message(request, messages.INFO, "Ваши действия требуют авторизации")
 
     login_form = UserLoginForm(data=request.POST)
     if request.method == 'POST' and login_form.is_valid():
