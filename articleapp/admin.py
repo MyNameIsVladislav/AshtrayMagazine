@@ -11,10 +11,7 @@ class CategoriesFilter(admin.SimpleListFilter):
     parameter_name = 'genres_id'
 
     def lookups(self, request, model_admin):
-        genres = []
-        for genre in Genres.objects.all():
-            genres.append((genre.slug, genre.name))
-        return set(genres)
+        return set([(genre.slug, genre.name) for genre in Genres.objects.all()])
 
     def queryset(self, request, queryset):
         if self.value():
