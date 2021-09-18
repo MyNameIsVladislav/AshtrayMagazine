@@ -32,7 +32,7 @@
                     <button class="main_anchor for-mob" type="submit">Сохранить</button>
                 </form>
                 {% if request.resolver_match.url_name == 'edit' %}
-                <a class="more mt-5" href="{% url 'auth:password_change' %}"> Сменить пароль </a>
+                    <a class="more mt-5" href="{% url 'auth:password_change' %}"> Сменить пароль </a>
                 {% endif %}
             </div>
     </div>

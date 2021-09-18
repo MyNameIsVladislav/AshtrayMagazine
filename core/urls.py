@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('mainapp.urls', namespace='main')),
-    path('auth/', include('authapp.urls', namespace='auth'))
+    path('auth/', include('authapp.urls', namespace='auth')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
 if settings.DEBUG:
