@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 from django.utils.translation import ugettext as _
 
 from core.settings import AUTH_USER_MODEL
@@ -29,20 +30,22 @@ class Genres(models.Model):
     def __str__(self):
         return f'{self.name} - {self.pk}'
 
+    def get_absolute_url(self):
+        return reverse('art:genres', kwargs={'slug_genre': self.slug})
 
-#
+
 class ContentQuerySet(models.QuerySet):
     def new_content(self):
         return self.order_by('publish')[0]
 
 
-class ContentManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().raw("""
+class TopContent(models.QuerySet):
+    def get_top(self):
+        return self.raw("""
                 select * from articleapp_articlemodel aa  where aa.id in (select a.id from articleapp_articlemodel a
                 left join articleapp_modellikesarticle am
                 on am.article_id_id = a.id
-                left join authapp_customuser ac
+                left join authapp_user ac
                 on ac.id = am.user_id_id
                 group by a.id order by count(am.id) desc  limit 3)""")
 
@@ -68,10 +71,13 @@ class ArticleModel(models.Model):
 
     objects = models.Manager()
     new_articles = ContentQuerySet.as_manager()
-    top = ContentManager()
+    top = TopContent().as_manager()
 
     def __str__(self):
         return f'{self.title} - {self.pk}'
+
+    def get_absolute_url(self):
+        return reverse('art:article', kwargs={'slug': self.slug})
 
 
 class ArticleUserModel(models.Model):
@@ -82,7 +88,7 @@ class ArticleUserModel(models.Model):
                                 verbose_name=_('user'), related_query_name='users')
     article_id = models.ForeignKey('ArticleModel', on_delete=models.CASCADE,
                                    verbose_name=_('article'), related_query_name='arts')
-    status = models.BinaryField(verbose_name='status', default=True)
+    status = models.BooleanField(verbose_name='status', max_length=5, default=True)
 
     def __str__(self):
         return f'{self.user_id.first_name} {self.user_id.last_name} - comment {self.id}'
@@ -102,7 +108,7 @@ class CommentsModel(ArticleUserModel):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Comment by {self.user_id.name} - date: {self.created_at}'
+        return f'Comment by {self.user_id.first_name} - date: {self.created_at}'
 
 
 class ModelLikesComment(ArticleUserModel):
