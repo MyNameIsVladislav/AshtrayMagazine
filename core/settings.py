@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse_lazy
 
-from core.logging.logging import LOGS
+from core.logging.logging import logging
 from core.ckeditor.ckeditor_conf import CKEDITOR_CONF
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -165,7 +165,7 @@ CKEDITOR_CONFIGS = CKEDITOR_CONF
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGGING = LOGS
+LOGGING = logging()
 
 DOMAIN_NAME = 'http://localhost:8000'
 
