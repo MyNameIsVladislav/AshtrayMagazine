@@ -1,8 +1,16 @@
 from django.shortcuts import render
 
+from articleapp.models import ArticleModel
+
 
 def index(request):
-    return render(request, 'base/index.html', {'title': 'Ashtray Magazine'})
+    new_post = ArticleModel.new_articles.first()
+    top = ArticleModel.top.all()
+    context = {'title': 'Ashtray Magazine',
+               'top': top,
+               'new_post': new_post
+               }
+    return render(request, 'base/index.html', context)
 
 
 def contact(request):

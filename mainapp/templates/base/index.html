@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link rel="icon" type="image/png" href="{% static 'img/main/VS.svg' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/main/logo.svg' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
@@ -37,6 +37,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'main:contact' %}">Контакты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'art:all' %}">Статьи</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'shop:catalog' %}">Магазин</a>
@@ -125,28 +128,29 @@
         <div class="container">
             <h2 class="sub-header">Актуальное</h2>
             <p class="other_text">Последняя статья на сайте</p>
-            <div class="picture">
-                <img class="picture_img" src="{% static 'img/main/JHd0fWfRceM.jpg' %}" alt="picture" width="100%">
-                <p class="picture_text_first"> Самурайский уклад един. Трилогия «Беспредел» Такеши Китано.</p>
+            <a href="{{new_post.get_absolute_url}}">
+                <div class="picture">
+                <img class="picture_img" src="{{ new_post.img_main.url}}" alt="picture" width="100%">
+                <p class="picture_text_first"> {{new_post.title}}</p>
             </div>
+            </a>
         </div>
         <div class="container">
             <h2 class="sub-header">Популярное</h2>
             <p class="other_text">Самое горячо обсуждаемое</p>
             <div class="category">
-                <div class="card article">
-                    <img class='poster' src="{% static 'img/main/1588074254_poster-heat-signature.jpg' %}" alt="poster2">
-                </div>
-                <div class="card card_3 article">
-                    <img class='poster' src="{% static 'img/main/orig.jfif' %}" alt="poster2">
-                </div>
-                <div class="card article">
-                    <img class='poster' src="{% static 'img/main/people_6_poster_front_white_500.jpg' %}" alt="poster2">
-                </div>
+                {% for post in top %}
+                <a href="{{post.get_absolute_url}}">
+                    <div class="card article">
+                    <img class='poster' src="{{post.img_mini.url}}" alt="poster2">
+                    </div>
+                </a>
+                {% endfor %}
             </div>
         </div>
     </div>
     {% endblock content %}
+    <br>
     <div class="footer">
         <div class="container footer_box">
             <div class="footer_top">
