@@ -1,3 +1,4 @@
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import RedirectView
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
@@ -51,12 +52,14 @@ class ArticlePageView(DetailView, RedirectView):
         article_info = {'user_id': self.request.user, 'article_id': context['post']}
         context['total_cost'] = context['post'].modellikesarticle_set.filter(status=True).count()
         if not self.request.user.is_anonymous:
-            context['active_like'] = \
-                ModelLikesArticle.objects.filter(user_id=self.request.user, article_id=context['post']).first()
+            context['active_like'] = ModelLikesArticle.objects.filter(
+                user_id=self.request.user,
+                article_id=context['post'],
+            ).first()
             context['comment_form'] = CommentForm(initial=article_info)
         return context
 
-    @login_required
+    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():

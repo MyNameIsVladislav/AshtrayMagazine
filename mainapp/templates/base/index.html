@@ -100,7 +100,7 @@
                         <h3 class='category-name'>Кинематограф</h3>
                         <p class="describe-text">Широкий выбор винила с любимой музыкой! Быстрая доставка, гарантия!.
                             Диски и пластинки в наличии и под заказ!</p>
-                        <a class='more' href="category/vinyl">Перейти в раздел</a>
+                        <a class='more' href="{% url 'art:genres' 'movie' %}">Перейти в раздел</a>
                     </div>
 
                 </div>
@@ -110,7 +110,7 @@
                         <h3 class='category-name'>Игровая индустрия</h3>
                         <p class="describe-text">Фирменные CD диски любимых групп и исполнителей покупайте с доставкой
                             на дом. Большой выбор фирменных музыкальных дисков</p>
-                        <a class='more' href="#"> Перейти в раздел </a>
+                        <a class='more' href="{% url 'art:genres' 'game' %}"> Перейти в раздел </a>
                     </div>
                 </div>
                 <div class="card card_2">
@@ -119,7 +119,7 @@
                         <h3 class='category-name'>Музыка</h3>
                         <p class="describe-text">Виниловые проигрыватели от мировых брендов. Официальные поставки.
                             Гарантия качества! Выгодные цены на товары каталога.</p>
-                        <a class='more' href="#">Перейти в раздел</a>
+                        <a class='more' href="{% url 'art:genres' 'music' %}">Перейти в раздел</a>
                     </div>
                 </div>
             </div>
