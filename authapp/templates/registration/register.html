@@ -1,0 +1,26 @@
+{% extends 'base/index.html' %}
+
+{% block content %}
+{% load static %}
+       <header class="bg-dark py-5 red-color">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder"> Регистрация </h1>
+                <p class="lead fw-normal text-white-50 mb-0">Будь с нами ...</p>
+            </div>
+        </div>
+    </header>
+    <div class="middle container">
+            <div class="order">
+                <form class="form-horizontal" action="{% url 'auth:register' %}" method="post" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                    {{ register_form.as_p }}
+                    <button class="but for-mob" type="submit">Зарегистрироваться</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+ {% endblock content %}

@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def index(request):
+    return render(request, 'base/index.html', {'title': 'Ashtray Magazine'})
+
+
+def contact(request):
+    return render(request, 'base/contacts.html', {'title': 'Контакты'})
