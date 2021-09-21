@@ -1,29 +1,17 @@
 from datetime import timedelta
-<<<<<<< HEAD
-=======
 import re
->>>>>>> CN-26
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-<<<<<<< HEAD
-from django.core.validators import RegexValidator
-=======
 from django.core.validators import BaseValidator
->>>>>>> CN-26
 from django.utils.timezone import now
 
 from authapp.managers import CustomUserManager
 
 
-<<<<<<< HEAD
-# Create your models here.
-
-=======
->>>>>>> CN-26
 class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
@@ -34,10 +22,7 @@ class User(AbstractUser):
 
     objects = CustomUserManager()
 
-<<<<<<< HEAD
-=======
     # для отправки почты при регистрации
->>>>>>> CN-26
     activation_key = models.CharField(
         max_length=128,
         blank=True
@@ -87,11 +72,8 @@ class UserProfile(models.Model):
         (RU, 'RU'),
         (EN, 'EN'),
     )
-<<<<<<< HEAD
-    phone_validator = RegexValidator(regex=r'^\+&7|1?\d{8,15}$')
-=======
+
     phone_validator = RegexValidatorPhone(limit_value=r'^(\+(7|1)|8)[0-9]{9}')
->>>>>>> CN-26
 
     user = models.OneToOneField(User, unique=True, null=False,
                                 db_index=True, on_delete=models.CASCADE)
@@ -104,18 +86,6 @@ class UserProfile(models.Model):
     def __str__(self):
         return f'Профиль пользователя: {self.user.email} - {self.user.id}'
 
-<<<<<<< HEAD
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            UserProfile.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.userprofile.save()
-
-=======
->>>>>>> CN-26
     @property
     def age(self):
         if self.user.birthday:

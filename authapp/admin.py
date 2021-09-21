@@ -1,11 +1,4 @@
 from django.contrib import admin
-<<<<<<< HEAD
-# Register your models here.
-from .models import User, UserProfile
-
-admin.site.register(User)
-admin.site.register(UserProfile)
-=======
 from django.utils.safestring import mark_safe
 
 from .models import User, UserProfile
@@ -36,4 +29,3 @@ class ProfileAdmin(admin.ModelAdmin):
 
 admin.site.site_title = 'Ashtray Magazine'
 admin.site.site_header = 'Ashtray Magazine'
->>>>>>> CN-26

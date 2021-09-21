@@ -11,9 +11,6 @@ from .views import *
 
 app_name = 'authapp'
 
-<<<<<<< HEAD
-urlpatterns = []
-=======
 urlpatterns = [
                path('login/', login, name='login'),
                path('logout/', logout, name='logout'),
@@ -31,4 +28,3 @@ urlpatterns = [
                path('password-reset/complete/', PasswordResetCompleteView.as_view(),
                     name='password_reset_complete')
                ]
->>>>>>> CN-26
