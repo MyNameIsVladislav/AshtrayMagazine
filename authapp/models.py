@@ -1,12 +1,14 @@
 from datetime import timedelta
 import re
 
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import BaseValidator
+
 from django.utils.timezone import now
 
 from authapp.managers import CustomUserManager
@@ -72,6 +74,7 @@ class UserProfile(models.Model):
         (RU, 'RU'),
         (EN, 'EN'),
     )
+
     phone_validator = RegexValidatorPhone(limit_value=r'^(\+(7|1)|8)[0-9]{9}')
 
     user = models.OneToOneField(User, unique=True, null=False,
