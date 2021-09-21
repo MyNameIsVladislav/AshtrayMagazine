@@ -1,0 +1,24 @@
+{% extends 'base/index.html' %}
+{% block title %} Пополнение баланса {% endblock %}
+{% block content %}
+{% load static %}
+<div class="container">
+    <div class="order">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong> {{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+    <h1 class="sub-sign"> Полнение баланса пользователей </h1>
+    <form action="{% url 'wallet:money' %}" method="POST">
+        {{ form_for_money.as_p }}
+        {% csrf_token %}
+        <button class="main_anchor" type="submit"> Пополнить </button>
+    </form>
+    </div>
+</div>
+
+{%endblock%}
