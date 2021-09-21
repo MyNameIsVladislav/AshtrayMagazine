@@ -13,5 +13,3 @@ class OrderCreateForm(forms.ModelForm):
             if name == 'user':
                 field.widget = forms.HiddenInput()
             field.widget.attrs['class'] = 'form-control'
-
-
