@@ -1,0 +1,54 @@
+
+{% extends 'base/index.html' %}
+
+{% block content %}
+{% load static %}
+       <header class="bg-dark py-5 red-color">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Контактные данные</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Свяжись с нами ...</p>
+            </div>
+        </div>
+    </header>
+    <div class="middle container">
+        <div class="contact_data">
+            <div class="contacts">
+                <p class="avatar"><img src="{% static 'img/main/photo.png' %}" alt="women" width="299"></p>
+                <h4 class="sub_sign"> Адрес </h4>
+                <p class="text_contacts"> Ростов-на-Дону</p>
+                <h4 class="sub_sign"> Телефоны </h4>
+                <ol class="roman">
+                    <li class="contact_list">+79773188482</li>
+                    <li class="contact_list">+83945349234</li>
+                </ol>
+                <h4 class="sub_sign"> Онлайн сервисы </h4>
+                <ul class="email">
+                    <li class="contact_list">deadhunt96@yandex.ru</li>
+                    <li class="contact_list">v.kolochikoff@yandex.ru</li>
+                </ul>
+            </div>
+            <div class="order">
+                <form action="#">
+                    {% csrf_token %}
+                    <h4 class="sub_sign"> Отправьте нам сообщение </h4>
+                    <p class="order_text">ФИО</p>
+                    <input class="entry for-mob" type="text" name="name" placeholder="Full Name">
+                    <p class="order_text">Email</p>
+                    <input class="entry for-mob" type="email" name="email" placeholder="mail@mail.ru">
+                    <p class="order_text">Сообщение</p>
+                    <textarea class="entry message for-mob" name="message"  cols="29" rows="9"></textarea><br>
+                    <button class="but for-mob" type="submit">Отправить</button>
+                </form>
+            </div>
+        </div>
+        <div class="map">
+            <h2 class="sub-header mb-5" style="text-align: center;"> Ищи нас здесь </h2>
+            <iframe
+                src="https://yandex.ru/map-widget/v1/?um=constructor%3Aa288981212cbb76bf89fc128159ff41761c2e8841ff4fa23b8896aa2a77a8763&amp;source=constructor"
+                width="1140" height="600" frameborder="0"></iframe>
+        </div>
+    </div>
+    </div>
+
+ {% endblock content %}

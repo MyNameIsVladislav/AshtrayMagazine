@@ -12,26 +12,27 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 from django.utils.translation import ugettext_lazy as _
+from django.urls import reverse_lazy
 
-from .logging.logging import LOGS
+from core.logging.logging import logging
+from core.ckeditor.ckeditor_conf import CKEDITOR_CONF
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 load_dotenv(os.path.join(BASE_DIR, '.env'))
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
 
 ALLOWED_HOSTS = []
@@ -40,6 +41,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'authapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,11 +49,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'ckeditor',
+    'ckeditor_uploader',
     'mainapp',
-    'authapp',
+    'articleapp',
+    'shopapp',
+    'purse',
+    'cart',
+    'orderapp',
 ]
 
-AUTH_USER_MODEL = 'authapp.CustomUser'
+AUTH_USER_MODEL = 'authapp.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,6 +85,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart'
             ],
         },
     },
@@ -139,11 +148,30 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+STATICFILES_DIR = (
+    os.path.join(BASE_DIR, 'staticfiles'),
+)
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+CART_SESSION_ID = 'cart'
+
+LOGIN_URL = reverse_lazy('auth:login')
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = CKEDITOR_CONF
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGGING = LOGS
+LOGGING = logging()
+
+DOMAIN_NAME = 'http://localhost:8000'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST')
+EMAIL_HOST_PASSWORD = os.getenv('PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
