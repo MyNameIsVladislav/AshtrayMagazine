@@ -1,0 +1,62 @@
+{% extends 'base/index.html' %}
+
+{% block content %}
+{% load static %}
+<!-- Header-->
+<header class="bg-dark py-5 red-color">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder"> Каталог </h1>
+            <p class="lead fw-normal text-white-50 mb-0">With this shop homepeage template</p>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'catalog' %}
+                  active
+                {% endif %}" aria-current="page" href="{% url 'shop:catalog' %}">Всё</a>
+            </li>
+            {% for category in categories %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.kwargs.slug_cat == category.slug %}
+                  active
+                {% endif %}" href="{% url 'shop:categories' category.slug%}" >{{category.name}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+
+<!-- Section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for item in product%}
+            <div class="col mb-5 mob-card">
+                <div class="card h-100">
+                    <img class="card-img-top" src="/media/{{ item.image }}" alt="..."/>
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <a href="{{ item.get_absolute_url }}" style="text-decoration: none; color: black;">
+                                <h4 class="fw-bolder">{{ item.name }}</h4>
+                            </a>
+                            <h5 class="fw-bolder">{{ item.short_desc }}</h5>
+                            <!-- Product price-->
+                            <p class="other_text">{{ item.price }} рублей</p>
+                            <br>
+                            <a class="main_anchor" href="{% url 'cart:cart_add' item.pk %}" style="font-size:14px; padding: 3px 5px; margin-top:5px"> В корзину </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+{% endblock content %}
+<!-- Footer-->
+
