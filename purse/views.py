@@ -18,8 +18,8 @@ MESSAGE_FOR_MAIL = """
 """
 
 
-class AddWalletView(TemplateView, RedirectView):
-    # permission_required = ('purse.can_add_money', 'purse.can_edit')
+class AddWalletView(PermissionRequiredMixin, TemplateView, RedirectView):
+    permission_required = ('purse.can_add_money', 'purse.can_edit')
 
     template_name = 'wallet/add_money.html'
 

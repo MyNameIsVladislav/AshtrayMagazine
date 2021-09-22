@@ -1,5 +1,6 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.http import require_POST
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, ListView
 from django.contrib.auth.decorators import login_required
@@ -29,6 +30,8 @@ def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
+    if request.GET.get('del', None):
+        return HttpResponseRedirect(reverse('order:not_product', args=(product.id,)))
     return redirect('cart:cart_detail')
 
 

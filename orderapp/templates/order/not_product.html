@@ -1,0 +1,15 @@
+{% extends 'base/index.html' %}
+{% load static%}
+{% block title %} Заказ {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="order">
+            <h1 class="sub-sign">Нет товара</h1>
+            <h2>Недостаточно товара</h2>
+            <p>На нашем складе недостаточно товара {{product.name}}. Товара на складе {{product.stock}}.              К сожалению, мы не сможем удовлетворить вашу покупку.
+                За более подробной информацией о наличие товара
+                и его поступлении просьба обратиться к администратору!
+            </p>
+        </div>
+    </div>
+{% endblock %}
