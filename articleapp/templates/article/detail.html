@@ -1,0 +1,63 @@
+{% extends 'base/index.html' %}
+{% block content %}
+{% load static %}
+<div class="container">
+    <div class="order article-page">
+        <div class="article-panel">
+                <p class="first"><a class="back" href="{% url 'art:all' %}">Назад</a>
+                </p>
+                <p class="last">Дата: {{post.publish|date:"d-m-Y H:i:s"}}</p>
+            </div>
+        <div>
+            <h1 class="display-4 fw-bolder mb-20"> {{post.title}} </h1>
+            <img class="article-main-img mb-20" src="{{ post.img_main.url }}">
+            <br>
+            {{ post.text | safe | linebreaks }}
+            <br>
+            <div class="panel-bottom">
+                <div class="like-block">
+                    <form action="{% url 'art:likes' %}#like" method="POST">
+                        {% csrf_token %}
+                        <button  class="like {% if active_like.status %} active-like {% endif %}"
+                                type="submit" name="article_id" value="{{post.pk}}" >
+                            <img src="{% static 'img/main/like.png' %}" width="20">
+                        </button>
+                    </form>
+                    <p id="like">{{total_cost}}</p>
+                </div>
+                <p class="last">Автор: {{post.owner_id.full_name}}</p>
+        </div>
+        {% with comments.count as total_comments %}
+        <h2>
+            {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+    {% endwith %}
+        <ul class="list-articles list-comments">
+        {% for comment in comments %}
+            <li class="comment mb-20"> <div class="article-panel">
+                <p class="first"><img src="{{comment.user_id.userprofile.avatar.url}}" width="40">
+                {{comment.user_id.userprofile.full_name}}
+                </p>
+                <p class="last">Дата: {{comment.created_at|date:"d-m-Y H:i:s"}}</p>
+            </div>
+                <div class="text-comment">
+                    <p>{{comment.text}}</p>
+                </div>
+
+            </li>
+            {% empty %}
+                <p>There are no comments yet.</p>
+            {% endfor %}
+            </ul>
+                {% if user.is_authenticated%}
+                    <h2>Add a new comment</h2>
+                    <form action="{% url 'art:article' post.slug %}" method="post">
+                        {{ comment_form.as_p }}
+                        {% csrf_token %}
+                        <p><input type="submit" value="Add comment"></p>
+                    </form>
+                {% endif %}
+    </div>
+</div>
+</div>
+{% endblock content %}

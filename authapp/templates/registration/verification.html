@@ -1,0 +1,18 @@
+{% extends 'base/index.html' %}
+
+{% block content %}
+{% load static %}
+    <div class="container px-4 px-lg-5 my-20">
+      <div class="text-center text-white">
+          {% if user %}
+      <h1 class="display-4 fw-bolder"> Поздравляю! </h1>
+        <p class="lead fw-normal text-white-50 mb-30">Пользователь {{user.first_name}} подтвержден.</p>
+      {% else %}
+        <h3>Верификация не пройдена.</h3>
+      {% endif %}
+      </div>
+      <button class="btn btn-round form-control" style="margin: 30px 0;">
+        <a href="{% url 'main:index' %}" class="main_anchor">на главную</a>
+      </button>
+    </div>
+{% endblock content%}

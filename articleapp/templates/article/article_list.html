@@ -1,0 +1,55 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% block content %}
+    <header class="bg-dark py-5 red-color">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">AshtrayMagazine</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Чтиво на любой вкус</p>
+            </div>
+        </div>
+    </header>
+<div class="container">
+     <ul class="nav nav-pills nav-fill mb-20">
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'all' %}
+                  active
+                {% endif %}" aria-current="page" href="{% url 'art:all' %}">Всё</a>
+            </li>
+            {% for genre in genres %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.kwargs.slug_genres == genre.slug %}
+                  active
+                {% endif %}" href="{% url 'art:genres' genre.slug %}" >{{genre.name}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    <div class="order">
+            <ul class="list-articles">
+                {% for p in posts %}
+                        <li> <div class="article-panel">
+                <p class="first">Категория: {% for genre in p.genres_id.all %}
+                    <a class="genres" href="{% url 'art:genres' genre.slug %}"> {{genre.name }}</a>
+                    {% if not forloop.last %}| {% endif %}
+                    {% endfor %}
+                </p>
+                <p class="last">Дата: {{p.publish|date:"d-m-Y H:i:s"}}</p>
+            </div>
+
+            {% if p.img_mini %}
+                <p><img class="img-article-left thumb" src="{{p.img_mini.url}}"></p>
+            {% endif %}
+                            <h2><a class="parent" href="{{p.get_absolute_url}}">{{p.title}}</a></h2>
+                {% autoescape on %}
+                {{p.text|safe|linebreaks|truncatewords:50}}
+                {% endautoescape %}
+                        <div class="clear"></div>
+                        <p class="link-read-post"><a href="{s{ p.get_abolute_url }}" >Читать статью</a></p>
+                        </li>
+                {% endfor %}
+            </ul>
+         {% include "article/pagination.html" with page=page_obj %}
+    </div>
+</div>
+<br>
+{% endblock %}

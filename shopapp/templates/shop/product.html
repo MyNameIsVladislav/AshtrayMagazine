@@ -1,0 +1,64 @@
+{% extends 'base/index.html' %}
+
+{% block content %}
+{% load static %}
+<!-- Header-->
+<header class="bg-dark py-5 red-color">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder"> Каталог </h1>
+            <p class="lead fw-normal text-white-50 mb-0">With this shop homepeage template</p>
+        </div>
+    </div>
+</header>
+<div class="container">
+
+           <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'catalog' %}
+                  active
+                {% endif %}" aria-current="page" href="{% url 'shop:catalog' %}">Всё</a>
+            </li>
+            {% for category in categories %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.kwargs.slug_cat == category.slug %}
+                  active
+                {% endif %}" href="{% url 'shop:categories' category.slug%}" >{{category.name}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+
+</div>
+<div class="product container">
+        <div class="product-name">
+            <div class="product-img"> <img class="logo-product" src="/media//{{ product.image }}" alt="albom" width="400"
+                    height="400">
+            </div>
+            <div class="product-name-title">
+                    <h2 class="singer">{{ product.name }}</h2>
+                <div class="specification">
+                    <p>Осталось: {{ product.stock }} шт.</p>
+                    <div class="describe_album">
+                        <b>Описание</b>
+                        <p>{{ product.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-price">
+            <div class="how-match">
+                <h3 class="price-name">Цена</h3>
+                <h2 class="money">{{ product.price }} рублей</h2>
+            </div>
+            <div class="product-in-box">
+                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                    {{ cart_product_form }}
+                    {% csrf_token %}
+                    <input class="main_anchor card_anchor" type="submit" value="Добавить в корзину">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+<!-- Footer-->
+
