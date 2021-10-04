@@ -85,9 +85,9 @@ class ArticleUserModel(models.Model):
         abstract = True
 
     user_id = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE,
-                                verbose_name=_('user'), related_query_name='users')
+                                verbose_name=_('user'))
     article_id = models.ForeignKey('ArticleModel', on_delete=models.CASCADE,
-                                   verbose_name=_('article'), related_query_name='arts')
+                                   verbose_name=_('article'))
     status = models.BooleanField(verbose_name='status', max_length=5, default=True)
 
     def __str__(self):

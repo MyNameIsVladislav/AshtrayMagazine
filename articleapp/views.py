@@ -72,10 +72,7 @@ class ArticlePageView(DetailView, RedirectView):
 @require_POST
 def add_like(request):
     post = ArticleModel.objects.get(pk=request.POST.get('article_id'))
-    like = ModelLikesArticle.objects.get_or_create(user_id=request.user, article_id=post)
-    if not like[1] and like[0].status:
-        like[0].status = False
-    else:
-        like[0].status = True
-    like[0].save()
+    like, status = ModelLikesArticle.objects.get_or_create(user_id=request.user, article_id=post)
+    like.status = False if not status and like.status else True
+    like.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

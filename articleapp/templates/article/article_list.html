@@ -44,7 +44,7 @@
                 {{p.text|safe|linebreaks|truncatewords:50}}
                 {% endautoescape %}
                         <div class="clear"></div>
-                        <p class="link-read-post"><a href="{{ p.get_absolute_url }}" >Читать статью</a></p>
+                        <p class="link-read-post"><a href="{s{ p.get_abolute_url }}" >Читать статью</a></p>
                         </li>
                 {% endfor %}
             </ul>
