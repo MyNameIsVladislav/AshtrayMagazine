@@ -103,7 +103,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('NAME'),
         'USER': os.getenv('USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),  # пароль
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
     }
 }
 
@@ -132,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-Ru'
 LANGUAGES = (
-    ('ru-Ru', _('English')),
+    ('ru-Ru', _('Russia')),
     ('en-us', _('English')),
 )
 
