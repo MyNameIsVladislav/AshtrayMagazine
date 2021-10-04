@@ -1,5 +1,4 @@
 import hashlib
-from datetime import date
 from random import random
 
 from django.contrib.auth import password_validation
@@ -13,18 +12,18 @@ from django.contrib.auth.forms import (
     PasswordChangeForm)
 from django.utils.translation import gettext_lazy as _
 
-from .models import User, UserProfile
+from authapp.models import User, UserProfile
 
 
 class UserLoginForm(AuthenticationForm):
     class Meta:
-        model = User  # модель пользователя
-        fields = ['email', 'password']  # поля используемые для аунтификации
+        model = User
+        fields = ['email', 'password']
 
     def __init__(self, *args, **kwargs):
         super(UserLoginForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'  # задаем стиль
+            field.widget.attrs['class'] = 'form-control'
 
 
 class UserRegisterForm(UserCreationForm):
@@ -36,17 +35,6 @@ class UserRegisterForm(UserCreationForm):
         super(UserRegisterForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-
-    # Проверка возраста, при возрасте меньше 18 вызывается ошибка
-    def clea_age(self):
-        birthday = self.cleaned_data['birthday']
-        today = date.today()
-        data = today.year - birthday.year - (
-                (today.month, today.day) < (birthday.month, birthday.day))
-        if data < 18:
-            raise forms.ValidationError('Вы слишком молоды!')
-
-        return data
 
     def save(self, *args, **kwargs):
         user = super(UserRegisterForm, self).save()
@@ -71,16 +59,6 @@ class UserEditForm(UserChangeForm):
             field.help_text = ''
             if field_name == 'password':
                 field.widget = forms.HiddenInput()
-
-    def clea_age(self):
-        birthday = self.cleaned_data['birthday']
-        today = date.today()
-        data = today.year - birthday.year - (
-                (today.month, today.day) < (birthday.month, birthday.day))
-        if data < 18:
-            raise forms.ValidationError('Вы слишком молоды!')
-
-        return data
 
 
 class EditProfileForm(forms.ModelForm):

@@ -1,46 +1,35 @@
 from django.contrib import auth, messages
-from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.views import (
     PasswordChangeView,
     PasswordResetView,
     PasswordResetConfirmView,
 )
-from django.utils.safestring import mark_safe
 
 from core import settings
-from .forms import *
-from .models import User
+from authapp.forms import (
+    UserEditForm,
+    UserRegisterForm,
+    UserLoginForm,
+    EditProfileForm,
+    ChangePassword,
+    PasswordReset,
+    SetPassword
+)
+from authapp.models import User
+from authapp.utils.functions.send_mail import send_verify_mail
 
-menu = [
+profile_menu = [
     {'title': 'Аккаунт', 'url': 'edit', 'namespace': 'auth:edit'},
     {'title': 'Личные данные', 'url': 'profile', 'namespace': 'auth:profile'}
 ]
 
 
-def send_verify_mail(user):
-    verify_link = reverse(
-        'auth:verify',
-        args=[user.email, user.activation_key])
-    key_activation = mark_safe(f'<a href="{settings.DOMAIN_NAME}{verify_link}"> Активировать </a>')
-    title = 'Подтверждение учетной записи'
-    message = f'Для подтверждения учетной записи {user.email}' \
-              f' пройдите по ссылке: {key_activation}'
-
-    return send_mail(
-        title,
-        message,
-        settings.EMAIL_HOST_USER,
-        [user.email],
-        fail_silently=False,
-        html_message=message
-    )
-
-
 def login(request):
-    title = 'вход'
+    title = _('Enter')
     if request.GET.get('next'):
         messages.add_message(request, messages.INFO, "Ваши действия требуют авторизации")
 
@@ -64,7 +53,7 @@ def logout(request):
 
 
 def register(request):
-    title = 'регистрация'
+    title = _('Registration')
 
     if request.method == 'POST':
         register_form = UserRegisterForm(request.POST)
@@ -87,7 +76,7 @@ def register(request):
 
 
 def edit_user(request):
-    title = 'Аккаунт'
+    title = _('Account')
     if request.method == 'POST':
         edit_form = UserEditForm(request.POST, instance=request.user)
         if edit_form.is_valid():
@@ -95,13 +84,13 @@ def edit_user(request):
             return HttpResponseRedirect(reverse('auth:edit'))
     else:
         edit_form = UserEditForm(instance=request.user)
-        content = {'title': title, 'edit_form': edit_form, 'menu': menu, 'namespace': 'auth:edit'}
+        content = {'title': title, 'edit_form': edit_form, 'menu': profile_menu, 'namespace': 'auth:edit'}
 
         return render(request, 'registration/edit.html', content)
 
 
 def edit_profile(request):
-    title = 'Личный кабинет'
+    title = _('Profile')
     if request.method == 'POST':
         profile_form = EditProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
         if profile_form.is_valid():
@@ -109,7 +98,7 @@ def edit_profile(request):
             return HttpResponseRedirect(reverse('auth:profile'))
 
     profile_form = EditProfileForm(instance=request.user.userprofile)
-    content = {'title': title, 'edit_form': profile_form, 'menu': menu, 'namespace': 'auth:profile'}
+    content = {'title': title, 'edit_form': profile_form, 'menu': profile_menu, 'namespace': 'auth:profile'}
     return render(request, 'registration/edit.html', content)
 
 

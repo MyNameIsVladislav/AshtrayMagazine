@@ -1,21 +1,20 @@
 from datetime import timedelta
-import re
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.validators import BaseValidator
 from django.utils.timezone import now
 
 from authapp.managers import CustomUserManager
+from authapp.utils.validators.validators import birthday_validator, phone_validator
 
 
 class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
-    birthday = models.DateField(_('birthday'))
+    birthday = models.DateField(_('birthday'), validators=[birthday_validator])
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -32,10 +31,7 @@ class User(AbstractUser):
     )
 
     def is_activation_key_expired(self):
-        if now() <= self.activation_key_expires:
-            return False
-        else:
-            return True
+        return False if now() <= self.activation_key_expires else True
 
     def __str__(self):
         return self.email
@@ -44,13 +40,6 @@ class User(AbstractUser):
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return 'users_avatar/user_{0}/{1}'.format(instance.user.id, filename)
-
-
-class RegexValidatorPhone(BaseValidator):
-    message = 'Некорректный номер телефона'
-
-    def compare(self, phone, valid_phone):
-        return not re.match(valid_phone, phone)
 
 
 class UserProfile(models.Model):
@@ -72,8 +61,6 @@ class UserProfile(models.Model):
         (RU, 'RU'),
         (EN, 'EN'),
     )
-
-    phone_validator = RegexValidatorPhone(limit_value=r'^(\+(7|1)|8)[0-9]{9}')
 
     user = models.OneToOneField(User, unique=True, null=False,
                                 db_index=True, on_delete=models.CASCADE)
