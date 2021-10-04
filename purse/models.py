@@ -8,7 +8,7 @@ from core.settings import AUTH_USER_MODEL
 class PurseModel(models.Model):
     class Meta:
         unique_together = (("user_id", "id"),)
-        permissions = (("add_money", "Top up balance"),)
+        permissions = (("can_add_money", "Top up balance"),)
 
     user_id = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE,
                                    related_name='wallet', verbose_name='user')

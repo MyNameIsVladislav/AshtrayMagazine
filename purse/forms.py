@@ -1,5 +1,4 @@
 from django import forms
-
 from purse.models import PurseModel
 
 
@@ -12,3 +11,7 @@ class AddMoneyForm(forms.ModelForm):
         super(AddMoneyForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+
+    def validate_unique(self):
+        pass
+

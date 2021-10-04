@@ -19,7 +19,7 @@ MESSAGE_FOR_MAIL = """
 
 
 class AddWalletView(PermissionRequiredMixin, TemplateView, RedirectView):
-    permission_required = ('purse.can_add_money', 'purse.can_edit')
+    permission_required = 'purse.can_add_money'
 
     template_name = 'wallet/add_money.html'
 
@@ -37,7 +37,7 @@ class AddWalletView(PermissionRequiredMixin, TemplateView, RedirectView):
         form = AddMoneyForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user_wallet = PurseModel.objects.get_or_create(user_id=cd['user_id'])[0]
+            user_wallet, status = PurseModel.objects.get_or_create(user_id=cd['user_id'])
             user_wallet.money += cd['money']
             user_wallet.save()
 
@@ -51,5 +51,4 @@ class AddWalletView(PermissionRequiredMixin, TemplateView, RedirectView):
             )
             kwargs['message'] = True
             return self.get(request, *args, **kwargs)
-
         return HttpResponseRedirect(reverse('wallet:money'))
